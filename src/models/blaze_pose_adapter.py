@@ -101,7 +101,6 @@ class BlazePoseAdapter(BasePoseEstimator):
             True if model loaded successfully, False otherwise
         """
         try:
-
             self.mp_pose = mp.solutions.pose
             self.mp_drawing = mp.solutions.drawing_utils
             self.mp_drawing_styles = mp.solutions.drawing_styles

@@ -95,13 +95,10 @@ class BasePoseEstimator(ABC):
         if CONFIG_MANAGER_AVAILABLE:
             self.config_manager = ConfigManager()
             if isinstance(config, str):
-                # Load from config file
                 self.config = self.config_manager.load_config(config_path=config)
             elif isinstance(config, dict):
-                # Load from dictionary
                 self.config = self.config_manager.load_config(config_dict=config)
             else:
-                # Load default config
                 self.config = self.config_manager.load_config()
         else:
             # Fallback without ConfigManager
@@ -115,23 +112,19 @@ class BasePoseEstimator(ABC):
                 )
             self.config_manager = None
 
-        # Initialize core attributes
         self.device = None
         self.model = None
         self.logger = self._setup_logger()
         self.is_loaded = False
 
-        # Extract configuration values
         self.confidence_threshold = self.config.get("processing", {}).get(
             "confidence_threshold", 0.3
         )
         self.batch_size = self.config.get("processing", {}).get("batch_size", 1)
 
-        # Initialize format and keypoint information
         self.keypoint_format = KeypointFormat.COCO17
         self.keypoint_names = []
 
-        # Initialize device
         self._initialize_device()
 
     def _setup_logger(self) -> logging.Logger:
@@ -149,8 +142,12 @@ class BasePoseEstimator(ABC):
 
     def _get_fallback_config(self) -> Dict[str, Any]:
         """Fallback configuration when ConfigManager is not available"""
+        # TODO: to provide a more comprehensive (basically selecting a default one) fallback config
+        self.logger.warning(
+            "ConfigManager not available. Using fallback configuration."
+        )
         return {
-            "model": {"name": "mmpose", "device": "auto"},
+            "model": {"name": "somepose", "device": "auto"},
             "processing": {
                 "batch_size": 1,
                 "confidence_threshold": 0.3,

@@ -9,7 +9,7 @@ with hierarchical overrides and environment variable substitution.
 import os
 import yaml
 import logging
-from typing import Dict, Any, Optional, List, Union
+from typing import Dict, Any, Optional, List
 from pathlib import Path
 from copy import deepcopy
 import re
@@ -33,7 +33,6 @@ class ConfigManager:
         self.logger = self._setup_logger()
 
         if default_config_path is None:
-
             current_dir = Path(__file__).parent
             default_config_path = current_dir / "default_config.yaml"
 
@@ -207,7 +206,6 @@ class ConfigManager:
 
         def substitute_value(value):
             if isinstance(value, str):
-
                 pattern = r"\$\{([^}:]+)(?::([^}]*))?\}"
 
                 def replace_env_var(match):
@@ -280,7 +278,6 @@ class ConfigManager:
                 "checkpoint_path",
             ]:
                 if not os.path.isabs(value):
-
                     return os.path.abspath(value)
             return value
 
@@ -450,16 +447,16 @@ def create_config_template(output_path: str, model_name: str = "mmpose"):
         print(f"Error saving template: {str(e)}")
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
+#     manager = ConfigManager()
 
-    manager = ConfigManager()
+#     config = manager.load_config(
+#         override_dict={"processing": {"batch_size": 16, "confidence_threshold": 0.5}}
+#     )
 
-    config = manager.load_config(
-        override_dict={"processing": {"batch_size": 16, "confidence_threshold": 0.5}}
-    )
+#     manager.print_config_summary()
 
-    manager.print_config_summary()
+#     manager.save_config("current_config.yaml")
 
-    manager.save_config("current_config.yaml")
-
-    create_config_template("config_template.yaml", "mmpose")
+#     create_config_template("config_template.yaml", "smaple_model")
+#     print("Configuration template created: config_template.yaml")

@@ -14,4 +14,7 @@ dependencies = [
     "tqdm>=4.67.1",
 ]
 
-
+[dependency-groups]
+commit = [
+    "pre-commit>=4.2.0",
+]
