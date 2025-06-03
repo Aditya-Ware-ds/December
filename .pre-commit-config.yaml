@@ -1,0 +1,11 @@
+- repo: https://github.com/astral-sh/uv-pre-commit
+  # uv version.
+  rev: 0.7.9
+  hooks:
+    - id: uv-export
+    - id: uv-format
+      name: uv-format
+      description: "Automatically format your code with uv format"
+      entry: uv run black
+      language: python
+      minimum_pre_commit_version: "2.9.2"

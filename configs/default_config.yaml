@@ -1,0 +1,195 @@
+# Default Configuration for Pose Estimation System
+# This file contains all default settings for pose estimators
+
+# Model Configuration
+model:
+  # Model type: mmpose, mediapipe, openpose, etc.
+  name: "mmpose"
+  
+  # Device selection: auto, cpu, cuda, mps (for Apple Silicon)
+  device: "auto"
+  
+  # Model-specific configurations
+  mmpose:
+    # Available checkpoints:
+    # - td-hm_hrnet-w32_8xb64-210e_coco-256x192 (recommended)
+    # - td-hm_hrnet-w48_8xb32-210e_coco-256x192 (higher accuracy)
+    # - td-hm_mobilenetv2_8xb64-210e_coco-256x192 (faster)
+    checkpoint: "td-hm_hrnet-w32_8xb64-210e_coco-256x192"
+    
+    # Input image size (width, height)
+    input_size: [256, 192]
+    
+    # Model precision
+    precision: "fp32"  # fp32, fp16
+    
+  mediapipe:
+    model_complexity: 1  # 0, 1, 2 (0=fastest, 2=most accurate)
+    min_detection_confidence: 0.5
+    min_tracking_confidence: 0.5
+    
+  openpose:
+    model_pose: "BODY_25"  # COCO, BODY_25, MPI
+    net_resolution: "368x368"
+    
+# Processing Configuration
+processing:
+  # Batch size for processing (adjust based on available memory)
+  batch_size: 32
+  
+  # Confidence threshold for keypoint detection (0.0 - 1.0)
+  confidence_threshold: 0.3
+  
+  # Frame processing settings
+  frame_processing:
+    # Skip frames for faster processing (1 = process all frames)
+    frame_skip: 1
+    
+    # Resize input frames (null to keep original size)
+    resize_input: null  # [width, height] or null
+    
+    # Maximum number of people to detect per frame (null = no limit)
+    max_people_per_frame: null
+    
+  # Memory management
+  memory:
+    # Clear GPU cache every N frames (0 = disabled)
+    clear_cache_interval: 100
+    
+    # Maximum memory usage in GB (approximate)
+    max_memory_gb: 8.0
+
+# Output Configuration
+output:
+  # Output format: json, csv, pickle
+  format: "json"
+  
+  # JSON output settings
+  json:
+    # Pretty print JSON output
+    indent: 2
+    
+    # Include metadata in output
+    include_metadata: true
+    
+    # Include processing statistics
+    include_stats: true
+    
+    # Include failed frames in output
+    include_failed_frames: true
+    
+  # Save visualization frames
+  visualization:
+    # Enable saving visualization images
+    enabled: false
+    
+    # Output directory for visualization images
+    output_dir: "visualizations"
+    
+    # Image format: jpg, png
+    image_format: "jpg"
+    
+    # JPEG quality (1-100)
+    jpeg_quality: 85
+    
+    # Draw settings
+    draw_keypoints: true
+    draw_skeleton: true
+    draw_bbox: true
+    keypoint_radius: 3
+    line_thickness: 2
+
+# Logging Configuration
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: "INFO"
+  
+  # Log to file
+  file:
+    enabled: false
+    path: "pose_estimation.log"
+    max_size_mb: 10
+    backup_count: 3
+    
+  # Log format
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # Progress bar settings
+  progress_bar:
+    enabled: true
+    description: "Processing frames"
+    unit: "frames"
+
+# Video Processing Specific Settings
+video:
+  # Supported input formats
+  supported_formats: [".mp4", ".avi", ".mov", ".mkv", ".wmv", ".flv"]
+  
+  # Output video settings (if generating output videos)
+  output_video:
+    # Output codec
+    codec: "mp4v"
+    
+    # Frame rate (null to use input fps)
+    fps: null
+    
+    # Quality settings
+    quality: "high"  # low, medium, high
+
+# Performance Optimization
+performance:
+  # Number of CPU threads to use (null = auto)
+  num_threads: null
+  
+  # Enable mixed precision training (for compatible models)
+  mixed_precision: false
+  
+  # Enable TensorRT optimization (NVIDIA GPUs only)
+  tensorrt:
+    enabled: false
+    precision: "fp16"
+    
+  # Enable ONNX optimization
+  onnx:
+    enabled: false
+    optimization_level: "all"
+
+# Validation and Quality Control
+validation:
+  # Minimum number of visible keypoints to consider a person valid
+  min_keypoints: 5
+  
+  # Maximum allowed keypoint distance from previous frame (for tracking)
+  max_keypoint_distance: 50.0
+  
+  # Outlier detection
+  outlier_detection:
+    enabled: true
+    method: "isolation_forest"  # isolation_forest, local_outlier_factor
+    contamination: 0.1
+
+# Advanced Features
+advanced:
+  # Multi-person tracking
+  tracking:
+    enabled: false
+    method: "simple"  # simple, kalman, deep_sort
+    max_disappeared: 30
+    max_distance: 50
+    
+  # Temporal smoothing
+  smoothing:
+    enabled: false
+    method: "moving_average"  # moving_average, gaussian, savgol
+    window_size: 5
+    
+  # Post-processing filters
+  filters:
+    # Remove low-confidence keypoints
+    confidence_filter: true
+    
+    # Apply temporal consistency check
+    temporal_consistency: false
+    
+    # Apply anatomical constraints
+    anatomical_constraints: false

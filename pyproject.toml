@@ -1,0 +1,17 @@
+[project]
+name = "december"
+version = "0.1.0"
+description = "Planning to build a pipeline to process the video and generation keypoint to map it in blender"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ffmpeg-python>=0.2.0",
+    "mediapipe>=0.10.21",
+    "opencv-python>=4.11.0.86",
+    "pyyaml>=6.0.2",
+    "torch>=2.7.0",
+    "torchvision>=0.22.0",
+    "tqdm>=4.67.1",
+]
+
+
